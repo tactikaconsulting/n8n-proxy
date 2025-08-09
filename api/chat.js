@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     try {
         const response = await axios.post(
-            'https://claudiourra.app.n8n.cloud/webhook/f44e7f71-f26-406f-ac48-313745b8c9e0/chat',
+            'https://claudiourra.app.n8n.cloud/webhook/f44e7f71-ff26-406f-ac48-313745b8c9e0/chat',
             req.body,
             { headers: { 'Content-Type': 'application/json' } }
         );
