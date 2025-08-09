@@ -1,11 +1,17 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', 'https://www.tactikaconsulting.com');
+    const allowedOrigins = [
+      'https://www.tactikaconsulting.com',
+      'http://www.tactikaconsulting.com'
+    ];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Log para ver el body recibido por el proxy
     console.log('BODY RECIBIDO:', req.body);
 
     if (req.method === 'OPTIONS') {
@@ -24,11 +30,9 @@ export default async function handler(req, res) {
             req.body,
             { headers: { 'Content-Type': 'application/json' } }
         );
-        // Log para ver la respuesta que entrega n8n al proxy
         console.log('RESPUESTA N8N:', response.data);
         res.status(200).json(response.data);
     } catch (error) {
-        // Bloque catch mejorado para loguear el error completo
         if (error.response) {
             console.log('ERROR N8N:', error.response.status, error.response.data);
             res.status(500).json({
