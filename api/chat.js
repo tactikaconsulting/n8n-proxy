@@ -28,6 +28,18 @@ export default async function handler(req, res) {
         console.log('RESPUESTA N8N:', response.data);
         res.status(200).json(response.data);
     } catch (error) {
-        res.status(500).json({ error: 'Error al conectar con n8n', details: error.message });
+        // Bloque catch mejorado para loguear el error completo
+        if (error.response) {
+            console.log('ERROR N8N:', error.response.status, error.response.data);
+            res.status(500).json({
+                error: 'Error al conectar con n8n',
+                details: error.message,
+                n8nStatus: error.response.status,
+                n8nData: error.response.data
+            });
+        } else {
+            console.log('ERROR N8N:', error.message);
+            res.status(500).json({ error: 'Error al conectar con n8n', details: error.message });
+        }
     }
 }
